@@ -1,0 +1,19 @@
+{
+  "case_id": "SYNTH-2026-001",
+  "event_description": "Synthetic example: patient experienced a fatal event after exposure.",
+  "receipt_date": "2026-09-16",
+  "event_onset_date": "2026-09-14",
+  "reporter_type": "healthcare_professional",
+  "medically_confirmed": true,
+  "seriousness": ["death"],
+  "expectedness": "unexpected",
+  "causality": "possibly_related",
+  "follow_up": false,
+  "minimum_criteria": {
+    "identifiable_patient": true,
+    "identifiable_reporter": true,
+    "suspect_product": true,
+    "adverse_event": true
+  }
+}
+
