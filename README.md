@@ -21,6 +21,8 @@ Case intake teams need consistent prioritization, but opaque scoring is difficul
 - Human-readable recommended actions and machine-readable reason codes
 - Input validation with Pydantic
 - Interactive OpenAPI documentation through FastAPI
+- Request correlation and structured latency/status logging
+- Privacy-aware observability that excludes case payloads from logs
 - Unit tests, linting, Docker support, and GitHub Actions CI
 
 ## Architecture
@@ -83,6 +85,24 @@ Example output:
 }
 ```
 
+## Observability
+
+Every HTTP response includes an `X-Request-ID` header. A valid UUID supplied by the caller is propagated; otherwise the API generates a new UUID. This makes it possible to correlate client-side errors with server-side request logs.
+
+Each completed request emits a structured JSON log containing only operational metadata:
+
+```json
+{
+  "request_id": "8f2d6fb8-f73f-4b9c-a5c8-68d442da93b4",
+  "method": "POST",
+  "path": "/v1/triage",
+  "status_code": 200,
+  "duration_ms": 4.27
+}
+```
+
+Request bodies, case fields, patient information, and other PV payload data are deliberately excluded from request logs. This keeps the telemetry useful for debugging and performance monitoring without unnecessarily copying potentially sensitive case data into the logging layer.
+
 ## Scoring model
 
 | Rule | Points |
@@ -115,4 +135,3 @@ pytest -q
 ## Author
 
 **Nazil Wasim** — Business Analysis, Pharmacovigilance, Enterprise SaaS, and Applied AI
-
